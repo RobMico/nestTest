@@ -16,4 +16,6 @@ async function start() {
     await app.listen(PORT, ()=>{console.log(`App started on ${PORT}`)});
 };
 
+
+//drop db - select 'drop table if exists "' || tablename || '" cascade;' FROM pg_tables where schemaname = 'public';
 start();

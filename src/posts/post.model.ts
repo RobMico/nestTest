@@ -4,17 +4,18 @@ import { Column, DataType, Table, Model, BelongsToMany, BelongsTo, ForeignKey } 
 import { User } from "src/users/user.model";
 
 interface PostCreationAttributes{
+    id:string;
     title:string;
     content:string;
-    userId:number;
+    userId?:number;
 }
 
 @Table({tableName:'posts'})
 export class UserPost extends Model<UserPost, PostCreationAttributes>{
 
-    @ApiProperty({example:'1', description:'ID'})
-    @Column({type:DataType.INTEGER, unique:true, primaryKey:true, autoIncrement:true})
-    id:number;
+    @ApiProperty({example:'1', description:'Unique hash'})
+    @Column({type:DataType.STRING, unique:true, primaryKey:true})
+    id:string;
 
     @ApiProperty({example:'title', description:'post title'})
     @Column({type:DataType.STRING, allowNull:false})
@@ -30,7 +31,7 @@ export class UserPost extends Model<UserPost, PostCreationAttributes>{
 
 
     @ForeignKey(()=>User)
-    @Column({type:DataType.INTEGER})
+    @Column({type:DataType.INTEGER, allowNull:true})
     userId:number;
 
     @BelongsTo(()=>User)

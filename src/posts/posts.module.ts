@@ -4,12 +4,13 @@ import { PostsController } from './posts.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from 'src/users/user.model';
 import { AuthModule } from 'src/auth/auth.module';
+import { UserPost } from './post.model';
 
 @Module({
   providers: [PostsService],
   controllers: [PostsController],
   imports:[
-    SequelizeModule.forFeature([User]),
+    SequelizeModule.forFeature([User, UserPost]),
     forwardRef(()=>AuthModule)
   ],
   exports:[

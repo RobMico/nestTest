@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UploadedFile, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req, UploadedFile, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/roles.auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -11,9 +11,24 @@ export class PostsController {
     @Roles('USER')
     @UseGuards(RolesGuard)
     @Post('/create')
-    createPost(dto:CreatePostDto, @Req() req: any, @UploadedFile() image)
+    createUserPost(dto:CreatePostDto, @Req() req: any)
     {
         let user = req.user;
-        this.postService.create(dto, user.id, image);
+        return this.postService.createUserPost(dto, user.id);
     }
+
+    @Post('/create_anon')
+    createAnonPost(@Req() req: any)
+    {
+        let dto:CreatePostDto = req.body;
+        return this.postService.createAnonPost(dto);
+    }
+
+    @Get('/:uuid')
+    getPost(@Param('uuid') uuid:string)
+    {
+        return this.postService.getPost(uuid)
+    }
+
+
 }
