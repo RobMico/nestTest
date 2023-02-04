@@ -19,6 +19,16 @@ export class PostsService {
         }
     }
 
+    async getUserPosts(userId:number) {
+        try {
+            let res = await this.postRepository.findAll({where:{userId:userId}});
+            return res;
+        } catch (ex) {
+            console.log(ex);
+            throw ex;
+        }
+    }
+
     async createUserPost(dto: CreatePostDto, userId: number) {
         try {
             let id: string = crypto.randomUUID();
