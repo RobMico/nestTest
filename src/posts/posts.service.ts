@@ -6,8 +6,17 @@ import * as crypto from 'crypto';
 
 @Injectable()
 export class PostsService {
+
     constructor(@InjectModel(UserPost) private postRepository: typeof UserPost) { }
 
+    async removePost(uuid: string, userId: number) {
+        try {
+            let res = await this.postRepository.destroy({ where: { id: uuid, userId: userId } });
+        } catch (ex) { 
+            console.log(ex);
+            throw ex;
+        }
+    }
 
     async getPost(uuid: string) {
         try {
@@ -19,9 +28,9 @@ export class PostsService {
         }
     }
 
-    async getUserPosts(userId:number) {
+    async getUserPosts(userId: number) {
         try {
-            let res = await this.postRepository.findAll({where:{userId:userId}});
+            let res = await this.postRepository.findAll({ where: { userId: userId } });
             return res;
         } catch (ex) {
             console.log(ex);
@@ -47,7 +56,7 @@ export class PostsService {
             const post = await this.postRepository.create({ ...dto, id: id });
             return post;
         } catch (ex) {
-            console.log(ex)
+            console.log(ex);
             throw ex;
         }
     }
