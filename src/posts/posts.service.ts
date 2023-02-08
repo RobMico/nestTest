@@ -6,13 +6,18 @@ import * as crypto from 'crypto';
 
 @Injectable()
 export class PostsService {
-
-    constructor(@InjectModel(UserPost) private postRepository: typeof UserPost) { }
+    private POST_DEATH_USER: number;
+    private POST_DEATH_ANON: number;
+    constructor(@InjectModel(UserPost) private postRepository: typeof UserPost) { 
+        this.POST_DEATH_USER = process.env.POST_DEATH_USER?parseInt(process.env.POST_DEATH_USER):1000*60*60*24*9;
+        this.POST_DEATH_ANON = process.env.POST_DEATH_ANON?parseInt(process.env.POST_DEATH_ANON):1000*60*60*24*3;
+    }
 
     async removePost(uuid: string, userId: number) {
         try {
             let res = await this.postRepository.destroy({ where: { id: uuid, userId: userId } });
-        } catch (ex) { 
+            return res;
+        } catch (ex) {
             console.log(ex);
             throw ex;
         }
@@ -41,23 +46,27 @@ export class PostsService {
     async createUserPost(dto: CreatePostDto, userId: number) {
         try {
             let id: string = crypto.randomUUID();
-            const post = await this.postRepository.create({ ...dto, userId: userId, id: id });
+            let deathTime = Date.now()+this.POST_DEATH_USER;
+            const post = await this.postRepository.create({ ...dto, userId: userId, id: id, deathTime:new Date(deathTime)});
             return post;
         } catch (ex) {
             console.log(ex);
             throw ex;
         }
-        //console.log(userId)
     }
     async createAnonPost(dto: CreatePostDto) {
-
         try {
             let id: string = crypto.randomUUID();
-            const post = await this.postRepository.create({ ...dto, id: id });
+            let deathTime = Date.now()+this.POST_DEATH_ANON;
+            const post = await this.postRepository.create({ ...dto, id: id, deathTime:new Date(deathTime) });
             return post;
         } catch (ex) {
             console.log(ex);
             throw ex;
         }
+    }
+
+    async clearOldPosts(){
+        
     }
 }

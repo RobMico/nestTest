@@ -9,7 +9,7 @@ interface RoleCreationAttributes{
     description:string;
 }
 
-@Table({tableName:'roles'})
+@Table({tableName:'roles', createdAt:false, updatedAt:false})
 export class Role extends Model<Role>{
 
     @ApiProperty({example:'1', description:'ID'})

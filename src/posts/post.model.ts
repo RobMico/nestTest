@@ -8,6 +8,7 @@ interface PostCreationAttributes{
     title:string;
     content:string;
     userId?:number;
+    deathTime:Date;
 }
 
 @Table({tableName:'posts'})
@@ -29,6 +30,9 @@ export class UserPost extends Model<UserPost, PostCreationAttributes>{
     @Column({type:DataType.STRING})
     image:string;
 
+    @ApiProperty({description:'Time when post can be removed'})
+    @Column({type:DataType.DATE})
+    deathTime:Date
 
     @ForeignKey(()=>User)
     @Column({type:DataType.INTEGER, allowNull:true})

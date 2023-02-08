@@ -38,7 +38,7 @@ export class PostsController {
 
     @Roles('USER')
     @UseGuards(RolesGuard)
-    @Get('/rm')
+    @Post('/rm')
     removePost(@Body() {uuid}:{uuid: string}, @Req() req: any) {
         const user = req.user;
         return this.postService.removePost(uuid, user.id)

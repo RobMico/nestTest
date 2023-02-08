@@ -10,8 +10,11 @@ import { UserRoles } from "./roles/user-roles.model";
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { UserPost } from "./posts/post.model";
+import { JobsModule } from './jobs/jobs.module';
 
+process.env.NODE_ENV||(process.env.NODE_ENV="development");//for debug mode
 @Module({
+    
     //providers:[...databaseProviders],
     imports: [
         ConfigModule.forRoot({
@@ -31,6 +34,7 @@ import { UserPost } from "./posts/post.model";
         RolesModule,
         AuthModule,
         PostsModule,
+        JobsModule,
     ]
 })
 export class AppModule { };
