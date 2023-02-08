@@ -41,6 +41,6 @@ export class PostsController {
     @Post('/rm')
     removePost(@Body() {uuid}:{uuid: string}, @Req() req: any) {
         const user = req.user;
-        return this.postService.removePost(uuid, user.id)
+        return this.postService.removePost(uuid, user.id);
     }
 }

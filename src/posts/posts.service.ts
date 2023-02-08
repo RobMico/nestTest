@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UserPost } from './post.model';
 import * as crypto from 'crypto';
+import {Op} from "sequelize";
 
 @Injectable()
 export class PostsService {
@@ -11,6 +12,7 @@ export class PostsService {
     constructor(@InjectModel(UserPost) private postRepository: typeof UserPost) { 
         this.POST_DEATH_USER = process.env.POST_DEATH_USER?parseInt(process.env.POST_DEATH_USER):1000*60*60*24*9;
         this.POST_DEATH_ANON = process.env.POST_DEATH_ANON?parseInt(process.env.POST_DEATH_ANON):1000*60*60*24*3;
+        this.clearOldPosts();
     }
 
     async removePost(uuid: string, userId: number) {
@@ -67,6 +69,14 @@ export class PostsService {
     }
 
     async clearOldPosts(){
-        
+        try {
+            const res = await this.postRepository.destroy({where:{deathTime:{
+                [Op.lt]:new Date()
+            }}});
+            console.log(res);
+        } catch (ex) {
+            console.log(ex);
+            throw ex;
+        }
     }
 }
