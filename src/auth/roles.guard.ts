@@ -17,11 +17,10 @@ export class RolesGuard implements CanActivate{
             {
                 return true;
             }
-            //console.log(requiredRoles.includes);
             const req = context.switchToHttp().getRequest();
             const authHeader = req.headers.authorization;
             const [bearer, token] = authHeader.split(' ');
-            if(bearer!='bearer'||!token)
+            if(bearer!='Bearer'||!token)
             {
                 throw new UnauthorizedException({message:'user unautorised'});    
             }

@@ -30,7 +30,6 @@ export class PostsController {
         return this.postService.getUserPosts(user.id)
     }
 
-
     @Get('/:uuid')
     getPost(@Param('uuid') uuid: string) {
         return this.postService.getPost(uuid)
@@ -39,7 +38,7 @@ export class PostsController {
     @Roles('USER')
     @UseGuards(RolesGuard)
     @Post('/rm')
-    removePost(@Body() {uuid}:{uuid: string}, @Req() req: any) {
+    removePost(@Body() { uuid }: { uuid: string }, @Req() req: any) {
         const user = req.user;
         return this.postService.removePost(uuid, user.id);
     }
