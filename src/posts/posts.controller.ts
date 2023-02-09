@@ -32,7 +32,7 @@ export class PostsController {
 
     @Get('/:uuid')
     getPost(@Param('uuid') uuid: string) {
-        return this.postService.getPost(uuid)
+        return this.postService.getPost(uuid);
     }
 
     @Roles('USER')
