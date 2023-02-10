@@ -31,6 +31,7 @@ export class CommentsService {
     async getAll(postId: string) {
         try {
             let res = await this.commentsRepository.findAll({where:{postId:postId}});
+            
             return res;
         } catch (ex) {
             console.log(ex);
